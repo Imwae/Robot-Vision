@@ -17,6 +17,10 @@ void powerLow(int);
 void delayOneSecond();
 
 void motorDrive();
+void motorForward();
+void motorBackward();
+void motorLeft();
+void motorRight();
 void stopMotor(int, int, int);
 
 void setMotor(int, int, int, bool, int);
@@ -100,20 +104,16 @@ void motorDrive() {
 
         switch (key) {
             case 'W':
-                setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 100);
-                setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 100);
+                motorForward();
                 break;
             case 'A':
-                setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 100);
-                setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 100);
+                motorLeft();
                 break;
             case 'S':
-                setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 100);
-                setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 100);
+                motorBackward();
                 break;
             case 'D':
-                setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 100);
-                setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 100);
+                motorRight();
                 break;
             
             case 'X':
@@ -122,6 +122,26 @@ void motorDrive() {
                 break;
         }
     }
+}
+
+void motorForward() {
+    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 100);
+    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 100);
+}
+
+void motorBackward() {
+    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 100);
+    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 100);
+}
+
+void motorLeft() {
+    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 100);
+    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 100);
+}
+
+void motorRight() {
+    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 100);
+    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 100);
 }
 
 void stopMotor(int pinIn1, int pinIn2, int pinPWM) {
