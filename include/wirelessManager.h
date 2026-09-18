@@ -11,4 +11,8 @@ Examples on calls to secrets.h are publicly available in secrets_example.h
 
 bool connectNetwork();
 
+bool checkConnection();
+
+void printSsid();
+
 #endif

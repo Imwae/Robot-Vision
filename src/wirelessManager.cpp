@@ -4,8 +4,11 @@
 #include "secrets.h"
 
 const int seconds = 10;
+
 bool connectNetwork() {
 
+    printSsid();
+    
     WiFi.begin(NET_SSID, NET_PASS);
 
     for (int i = 0; i < seconds; i++) {
@@ -14,6 +17,7 @@ bool connectNetwork() {
         if (WiFi.status() == WL_CONNECTED) {
             Serial.print("IP Address: ");
             Serial.println(WiFi.localIP());
+            WiFi.setAutoReconnect(true); // sets auto reconnect 
             return true;
         }
 
@@ -21,4 +25,34 @@ bool connectNetwork() {
     }
 
     return false;
+}
+
+bool checkConnection() {
+
+    static bool lastStateConnected = true;
+
+    if (WiFi.status() != WL_CONNECTED) {
+        if (lastStateConnected) {
+            Serial.println("Connection lost, retrying... ");
+        }
+
+        lastStateConnected = false;
+        return false;
+
+    } else {
+        if (!lastStateConnected) {
+            Serial.println("Connection reconnected!"); 
+        }
+
+        lastStateConnected = true;
+        return true;
+    }
+}
+
+void printSsid() {
+    int count = WiFi.scanNetworks();
+
+    for (int i = 0; i < count; i++) {
+        Serial.println(WiFi.SSID(i));
+    }
 }
