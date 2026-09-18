@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "wirelessManager.h"
 
 int PIN_NUMBER = 46; // RGB Pin
 
@@ -14,16 +15,25 @@ const int PIN_PWMB = D8;
 void powerHigh(int);
 void powerLow(int);
 void delayOneSecond();
-void setupMotorPins();
-void setMotor(int, int, int, bool, int);
+
 void motorDrive();
 void stopMotor(int, int, int);
 
+void setMotor(int, int, int, bool, int);
+void setupMotorPins();
+void setupNetwork();
+
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(115200);
-  pinMode(PIN_NUMBER, OUTPUT);
-  setupMotorPins();
+    // put your setup code here, to run once:
+    Serial.begin(115200);
+    pinMode(PIN_NUMBER, OUTPUT);
+
+    delayOneSecond();
+    
+    setupMotorPins();
+    setupNetwork();
+
+
 }
 
 void loop() {
@@ -35,6 +45,15 @@ void loop() {
 // put function definitions here:
 
 // setup functions
+
+void setupNetwork() {
+
+    if (connectNetwork()) {
+        Serial.println("Connected!");
+    } else {
+        Serial.println("Unsuccessful! Try again!");
+    }
+}
 
 void setupMotorPins() {
     pinMode(PIN_AIN1, OUTPUT);
