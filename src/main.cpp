@@ -29,7 +29,7 @@ void setup() {
     // put your setup code here, to run once:
     Serial.begin(115200);
     setupLEDPin();
-    
+
     delayOneSecond();
 
     setupMotorPins();
@@ -118,23 +118,24 @@ void motorDrive() {
 }
 
 void motorForward() {
-    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 100);
-    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 100);
+    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 200);
+    delay(200);
+    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 200);
 }
 
 void motorBackward() {
-    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 100);
-    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 100);
+    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 200);
+    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 200);
 }
 
 void motorLeft() {
-    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 100);
-    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 100);
+    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 200);
+    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 200);
 }
 
 void motorRight() {
-    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 100);
-    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 100);
+    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 200);
+    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 200);
 }
 
 void stopBothMotors() {
