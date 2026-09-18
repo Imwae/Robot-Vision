@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include "wirelessManager.h"
-
-int PIN_NUMBER = 46; // RGB Pin
+#include "playLED.h"
 
 // Motor Driver Connection Pins
 const int PIN_AIN1 = D3;
@@ -12,8 +11,6 @@ const int PIN_BIN2 = D7;
 const int PIN_PWMB = D8;
 
 // put function declarations here:
-void powerHigh(int);
-void powerLow(int);
 void delayOneSecond();
 
 void motorDrive();
@@ -31,14 +28,12 @@ void setupNetwork();
 void setup() {
     // put your setup code here, to run once:
     Serial.begin(115200);
-    pinMode(PIN_NUMBER, OUTPUT);
-
-    delayOneSecond();
+    setupLEDPin();
     
+    delayOneSecond();
+
     setupMotorPins();
     setupNetwork();
-
-
 }
 
 void loop() {
@@ -48,6 +43,7 @@ void loop() {
         motorDrive();
     } else {
         stopBothMotors();
+        blinkAttemptConnect();
     }
 }
 
@@ -59,8 +55,10 @@ void setupNetwork() {
 
     if (connectNetwork()) {
         Serial.println("Connected!");
+        blinkSuccess();
     } else {
         Serial.println("Unsuccessful! Try again!");
+        blinkFailed();
     }
 }
 
@@ -71,15 +69,6 @@ void setupMotorPins() {
     pinMode(PIN_BIN1, OUTPUT);
     pinMode(PIN_BIN2, OUTPUT);
     pinMode(PIN_PWMB, OUTPUT);
-}
-
-// Blinking light functions
-void powerHigh(int pin) {
-  digitalWrite(pin, HIGH);
-}
-
-void powerLow(int pin) {
-  digitalWrite(pin, LOW);
 }
 
 void delayOneSecond() {
