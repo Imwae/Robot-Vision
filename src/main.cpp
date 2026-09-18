@@ -22,6 +22,7 @@ void motorBackward();
 void motorLeft();
 void motorRight();
 void stopMotor(int, int, int);
+void stopBothMotors();
 
 void setMotor(int, int, int, bool, int);
 void setupMotorPins();
@@ -117,8 +118,7 @@ void motorDrive() {
                 break;
             
             case 'X':
-                stopMotor(PIN_AIN1, PIN_AIN2, PIN_PWMA);
-                stopMotor(PIN_BIN1, PIN_BIN2, PIN_PWMB);
+                stopBothMotors();
                 break;
         }
     }
@@ -142,6 +142,12 @@ void motorLeft() {
 void motorRight() {
     setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 100);
     setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 100);
+}
+
+void stopBothMotors() {
+    stopMotor(PIN_AIN1, PIN_AIN2, PIN_PWMA);
+    stopMotor(PIN_BIN1, PIN_BIN2, PIN_PWMB);
+
 }
 
 void stopMotor(int pinIn1, int pinIn2, int pinPWM) {
