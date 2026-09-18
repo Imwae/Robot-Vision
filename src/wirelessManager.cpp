@@ -7,8 +7,6 @@ const int seconds = 10;
 
 bool connectNetwork() {
 
-    printSsid();
-    
     WiFi.begin(NET_SSID, NET_PASS);
 
     for (int i = 0; i < seconds; i++) {
