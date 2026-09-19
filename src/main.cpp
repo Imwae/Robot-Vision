@@ -14,7 +14,9 @@ const int PIN_PWMB = D8;
 // put function declarations here:
 void delayOneSecond();
 
-void motorDrive();
+void wiredMotorDrive();
+void wirelessMotorDrive();
+
 void motorForward();
 void motorBackward();
 void motorLeft();
@@ -41,7 +43,8 @@ void loop() {
     // put your main code here, to run repeatedly:
 
     if (checkConnection()) {
-        motorDrive();
+        // wiredMotorDrive(); This is when the robot is connected via USB
+        wirelessMotorDrive(); // This is when the robot is connected via Network
     } else {
         stopBothMotors();
         blinkAttemptConnect();
@@ -94,7 +97,7 @@ void setMotor(int pinIn1, int pinIn2, int pinPWM, bool forward, int speed) {
 
 }
 
-void motorDrive() {
+void wiredMotorDrive() {
     if (Serial.available() > 0) {
         char key = Serial.read();
         key = toupper(key);
@@ -120,9 +123,31 @@ void motorDrive() {
     }
 }
 
+void wirelessMotorDrive() {
+    char key = getInputCharacter();
+    key = toupper(key);
+    switch (key) {
+        case 'W':
+            motorForward();
+            break;
+        case 'A':
+            motorLeft();
+            break;
+        case 'S':
+            motorBackward();
+            break;
+        case 'D':
+            motorRight();
+            break;
+
+        default:
+            stopBothMotors();
+            break;
+    }
+}
+
 void motorForward() {
     setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 200);
-    delay(200);
     setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 200);
 }
 
