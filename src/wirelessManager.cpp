@@ -1,15 +1,24 @@
+/*
+
+wirelessManager searches for the network signal based on configured NET_SSID and NET_PASS in secrets.h
+
+Establish initial connection, and checks connection after initial establishment
+
+*/
+
 #include <WiFi.h>
 #include <Arduino.h>
 #include "wirelessManager.h"
 #include "secrets.h"
 
-const int seconds = 10;
+const int attempts = 10;
 
+// Initial connection that return true if connected, otherwise false if couldnt connect in the specified attempt limit
 bool connectNetwork() {
 
     WiFi.begin(NET_SSID, NET_PASS);
 
-    for (int i = 0; i < seconds; i++) {
+    for (int i = 0; i < attempts; i++) {
         delay(1000);
 
         if (WiFi.status() == WL_CONNECTED) {
@@ -25,6 +34,7 @@ bool connectNetwork() {
     return false;
 }
 
+// Checks connections to see whether connection is still stable (true) or dropped (false)
 bool checkConnection() {
 
     static bool lastStateConnected = true;
@@ -35,7 +45,6 @@ bool checkConnection() {
         }
 
         lastStateConnected = false;
-        return false;
 
     } else {
         if (!lastStateConnected) {
@@ -43,9 +52,12 @@ bool checkConnection() {
         }
 
         lastStateConnected = true;
-        return true;
     }
+
+    return lastStateConnected;
 }
+
+// Finds all possible SSIDs nearby and prints out in a list order
 
 void printSsid() {
     int count = WiFi.scanNetworks();
