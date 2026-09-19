@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "wirelessManager.h"
 #include "playLED.h"
+#include "webManager.h"
 
 // Motor Driver Connection Pins
 const int PIN_AIN1 = D3;
@@ -56,6 +57,8 @@ void setupNetwork() {
     if (connectNetwork()) {
         Serial.println("Connected!");
         blinkSuccess();
+        setupWebPage();
+
     } else {
         Serial.println("Unsuccessful! Try again!");
         blinkFailed();
