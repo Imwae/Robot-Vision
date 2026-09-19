@@ -16,6 +16,14 @@ static void powerLow() {
 
 // types of blinks
 
+void ledOn() {
+    powerLow();
+}
+
+void ledOff() {
+    powerHigh();
+}
+
 static void blinkCount(int count) {
     for (int i = 0; i < count; i++) {
         powerLow();

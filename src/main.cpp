@@ -129,41 +129,50 @@ void wirelessMotorDrive() {
     switch (key) {
         case 'W':
             motorForward();
+            ledOn();
             break;
         case 'A':
             motorLeft();
+            ledOn();
             break;
         case 'S':
             motorBackward();
+            ledOn();
             break;
         case 'D':
             motorRight();
+            ledOn();
             break;
 
         default:
             stopBothMotors();
+            ledOff();
             break;
     }
 }
 
 void motorForward() {
-    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 200);
-    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 200);
+    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 100);
+    delay(100);
+    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 100);
 }
 
 void motorBackward() {
-    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 200);
-    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 200);
+    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 100);
+    delay(100);
+    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 100);
 }
 
 void motorLeft() {
-    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 200);
-    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 200);
+    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 100);
+    delay(100);
+    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 100);
 }
 
 void motorRight() {
-    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 200);
-    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 200);
+    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 100);
+    delay(100);
+    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 100);
 }
 
 void stopBothMotors() {

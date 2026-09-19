@@ -6,6 +6,8 @@ void setupLEDPin();
 void powerHigh(int pin);
 void powerLow(int pin);
 
+void ledOn();
+void ledOff();
 void blinkSuccess();
 void blinkFailed();
 void blinkAttemptConnect();
