@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>RobotMovement</title>
+	</head>
+	<body>
+
+    <p id="textSpace">
+        Control movement: 
+
+    </p>
+
+    <button type="button" id="toggleButton">
+        Control movement toggle
+    </button>
+
+    <script>
+        let keyInput = ""
+        let controlEnabled = false
+        const toggleButton = document.getElementById("toggleButton")
+        const textStatus = document.getElementById("textSpace")
+        const primaryHost = window.location.hostname
+        const fallbackIp= "10.0.0.71"
+        const host = primaryHost || fallbackIp
+        const ws = new WebSocket("ws://" + host + "/ws")
+
+        setInterval(function() {
+             if ((keyInput !== "") && (ws.readyState === WebSocket.OPEN)) {
+                console.log(keyInput) 
+                ws.send(keyInput)
+            }
+            
+        }, 100)
+
+        toggleButton.addEventListener("click", function(event) {
+            controlEnabled = !controlEnabled
+            textStatus.textContent = "Control movement toggle: " + controlEnabled
+
+            if (!controlEnabled) {
+                keyInput = ""
+            }
+        })
+
+        document.addEventListener("keydown", function(event) {
+            if (controlEnabled) {
+                keyInput = (event.key).toUpperCase()
+            }
+        })
+
+        document.addEventListener("keyup", function(event) {
+            if (keyInput === (event.key).toUpperCase()) {
+                keyInput = ""
+                console.log("Keypress ended!")
+            }
+        })
+
+    </script>
+	</body>
+</html>
