@@ -2,30 +2,15 @@
 #include "wirelessManager.h"
 #include "playLED.h"
 #include "webManager.h"
+#include "motor.h"
 
-// Motor Driver Connection Pins
-const int PIN_AIN1 = D3;
-const int PIN_AIN2 = D4;
-const int PIN_PWMA = D5;
-const int PIN_BIN1 = D6;
-const int PIN_BIN2 = D7;
-const int PIN_PWMB = D8;
 
 // put function declarations here:
 void delayOneSecond();
 
-void wiredMotorDrive();
+// void wiredMotorDrive(); // unused method
 void wirelessMotorDrive();
 
-void motorForward();
-void motorBackward();
-void motorLeft();
-void motorRight();
-void stopMotor(int, int, int);
-void stopBothMotors();
-
-void setMotor(int, int, int, bool, int);
-void setupMotorPins();
 void setupNetwork();
 
 void setup() {
@@ -53,6 +38,10 @@ void loop() {
 
 // put function definitions here:
 
+void delayOneSecond() {
+  delay(1000);
+}
+
 // setup functions
 
 void setupNetwork() {
@@ -68,121 +57,63 @@ void setupNetwork() {
     }
 }
 
-void setupMotorPins() {
-    pinMode(PIN_AIN1, OUTPUT);
-    pinMode(PIN_AIN2, OUTPUT);
-    pinMode(PIN_PWMA, OUTPUT);
-    pinMode(PIN_BIN1, OUTPUT);
-    pinMode(PIN_BIN2, OUTPUT);
-    pinMode(PIN_PWMB, OUTPUT);
-}
+// Motor functions
 
-void delayOneSecond() {
-  delay(1000);
-}
+// void wiredMotorDrive() {
+//     if (Serial.available() > 0) {
+//         char key = Serial.read();
+//         key = toupper(key);
 
-// Car movement functions
-
-void setMotor(int pinIn1, int pinIn2, int pinPWM, bool forward, int speed) {
-
-    analogWrite(pinPWM, speed);
-
-    if (forward) {
-        digitalWrite(pinIn1, HIGH);
-        digitalWrite(pinIn2, LOW);
-    } else {
-        digitalWrite(pinIn1, LOW);
-        digitalWrite(pinIn2, HIGH);
-    }
-
-}
-
-void wiredMotorDrive() {
-    if (Serial.available() > 0) {
-        char key = Serial.read();
-        key = toupper(key);
-
-        switch (key) {
-            case 'W':
-                motorForward();
-                break;
-            case 'A':
-                motorLeft();
-                break;
-            case 'S':
-                motorBackward();
-                break;
-            case 'D':
-                motorRight();
-                break;
+//         switch (key) {
+//             case 'W':
+//                 motorForward();
+//                 break;
+//             case 'A':
+//                 motorLeft();
+//                 break;
+//             case 'S':
+//                 motorBackward();
+//                 break;
+//             case 'D':
+//                 motorRight();
+//                 break;
             
-            case 'X':
-                stopBothMotors();
-                break;
-        }
-    }
-}
+//             case 'X':
+//                 stopBothMotors();
+//                 break;
+//         }
+//     }
+// }
+
+// Current working wireless movements
 
 void wirelessMotorDrive() {
     char key = getInputCharacter();
     key = toupper(key);
+
+    if (key != '\0') {
+        ledOn();
+    } else {
+        ledOff();
+    }
+
     switch (key) {
+
         case 'W':
             motorForward();
-            ledOn();
             break;
         case 'A':
             motorLeft();
-            ledOn();
             break;
         case 'S':
             motorBackward();
-            ledOn();
             break;
         case 'D':
             motorRight();
-            ledOn();
             break;
 
         default:
             stopBothMotors();
-            ledOff();
             break;
     }
-}
-
-void motorForward() {
-    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 100);
-    delay(100);
-    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 100);
-}
-
-void motorBackward() {
-    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 100);
-    delay(100);
-    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 100);
-}
-
-void motorLeft() {
-    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 100);
-    delay(100);
-    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 100);
-}
-
-void motorRight() {
-    setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 100);
-    delay(100);
-    setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 100);
-}
-
-void stopBothMotors() {
-    stopMotor(PIN_AIN1, PIN_AIN2, PIN_PWMA);
-    stopMotor(PIN_BIN1, PIN_BIN2, PIN_PWMB);
-
-}
-
-void stopMotor(int pinIn1, int pinIn2, int pinPWM) {
-    digitalWrite(pinIn1, LOW);
-    digitalWrite(pinIn2, LOW);
-    analogWrite(pinPWM, 0);
 }
