@@ -53,28 +53,24 @@ static void setMotor(int pinIn1, int pinIn2, int pinPWM, bool forward, int speed
 
 void motorForward() {
     setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 100);
-    delay(100);
     setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 100);
 }
 
 // spins both motors backwards
 void motorBackward() {
     setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 100);
-    delay(100);
     setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 100);
 }
 
 // spins motor A forward, while the motor B backwards
 void motorLeft() {
     setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, true, 100);
-    delay(100);
     setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, false, 100);
 }
 
 // spins the motor A backwards, while the motor B forwards
 void motorRight() {
     setMotor(PIN_AIN1,PIN_AIN2, PIN_PWMA, false, 100);
-    delay(100);
     setMotor(PIN_BIN1,PIN_BIN2, PIN_PWMB, true, 100);
 }
 
