@@ -26,12 +26,16 @@
         const textStatus = document.getElementById("textSpace")
         const retryConnection = document.getElementById("retryConnection")
         const primaryHost = window.location.hostname
-        const fallbackIp= "10.0.0.71"
+        const fallback = "robotvision.local"
         const host = primaryHost || fallbackIp
         let ws
         connectSocket()
 
         function connectSocket() {
+            if (ws) {
+                ws.close()
+            }
+            
             ws = new WebSocket("ws://" + host + "/ws")
 
             ws.onclose = function showButton() {

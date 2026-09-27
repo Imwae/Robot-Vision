@@ -48,12 +48,16 @@ static const char *htmlContent PROGMEM = R"rawliteral(
             const textStatus = document.getElementById("textSpace")
             const retryConnection = document.getElementById("retryConnection")
             const primaryHost = window.location.hostname
-            const fallbackIp= "10.0.0.71"
+            const fallback = "robotvision.local"
             const host = primaryHost || fallbackIp
             let ws
             connectSocket()
 
             function connectSocket() {
+                if (ws) {
+                    ws.close()
+                }
+                
                 ws = new WebSocket("ws://" + host + "/ws")
 
                 ws.onclose = function showButton() {
@@ -115,7 +119,7 @@ void setupWebPage() {
     ws.onEvent([](AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
 
         if (type == WS_EVT_DATA) {
-        Serial.printf("%s\n", (char *)data);
+        Serial.printf("\n", (char *)data);
         storedCharacter = (char) *data;
         Serial.println(millis() - lastMessageTime);
         lastMessageTime = millis();
