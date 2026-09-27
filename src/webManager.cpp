@@ -117,6 +117,7 @@ void setupWebPage() {
         if (type == WS_EVT_DATA) {
         Serial.printf("%s\n", (char *)data);
         storedCharacter = (char) *data;
+        Serial.println(millis() - lastMessageTime);
         lastMessageTime = millis();
 
         }
@@ -134,7 +135,7 @@ void setupWebPage() {
 // Example: Pressing and holding "W" will return W indefinitely.  Once 2 cycles of inputs has not been detected,  return '\0'
 char getInputCharacter() {
 
-    if (millis() - lastMessageTime >  200) {
+    if (millis() - lastMessageTime >  300) {
         storedCharacter = '\0';
     }
 
