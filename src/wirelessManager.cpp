@@ -4,6 +4,9 @@ wirelessManager searches for the network signal based on configured NET_SSID and
 
 Establish initial connection, and checks connection after initial establishment
 
+Creates an mDNS hostname "mdsnName" that can be accessed instead of the IP address. Reason for this is that the network's IP can change every so often. 
+Using a hostname fixes this issue so that the user does not have to update the address each change.
+
 All credentials and sensitive information are purposefully hidden in secrets.h
 Examples on calls to secrets.h are publicly available in secrets_example.h
 
@@ -11,10 +14,12 @@ Examples on calls to secrets.h are publicly available in secrets_example.h
 
 #include <WiFi.h>
 #include <Arduino.h>
+#include <ESPmDNS.h>
 #include "wirelessManager.h"
 #include "secrets.h"
 
 const int attempts = 10;
+const char* mdnsName = "robotvision";
 
 // Initial connection that return true if connected, otherwise false if couldnt connect in the specified attempt limit
 bool connectNetwork() {
@@ -28,6 +33,9 @@ bool connectNetwork() {
             Serial.print("IP Address: ");
             Serial.println(WiFi.localIP());
             WiFi.setAutoReconnect(true); // sets auto reconnect 
+            MDNS.begin(mdnsName);
+            Serial.println("mDNS successfully created!");
+
             return true;
         }
 
@@ -42,7 +50,7 @@ bool checkConnection() {
 
     static bool lastStateConnected = true;
 
-    if (WiFi.status() != WL_CONNECTED) {
+    if ((WiFi.status() != WL_CONNECTED)) {
         if (lastStateConnected) {
             Serial.println("Connection lost, retrying... ");
         }
